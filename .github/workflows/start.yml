@@ -19,29 +19,31 @@ jobs:
       - name: Install and activate mise
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          
-          # Install mise
           curl -sSL https://mise.run | sh
-          
-          # Activate mise for this shell session
           eval "$($HOME/.local/bin/mise activate bash)"
-          
-          # Install Ruby version from mise.toml
           mise install
-          
-          # Use mise-managed Ruby
           mise use ruby
-          
-          # Verify correct Ruby version
           ruby -v
+
+      # Cache gems
+      - name: Cache Ruby gems
+        uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
 
       - name: Install dependencies with Bundler
         run: |
-          # Use mise Ruby — install bundler locally
           export PATH="$HOME/.local/bin:$PATH"
           eval "$($HOME/.local/bin/mise activate bash)"
           
+          # Install bundler
           gem install bundler --no-document
+          
+          # Install gems into vendor/bundle for caching
+          bundle config set path 'vendor/bundle'
           bundle install --jobs 4 --retry 3
 
       - name: Run tests
