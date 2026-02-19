@@ -24,19 +24,19 @@ jobs:
           # Install mise
           curl -sSL https://mise.run | sh
           
-          # Activate mise for this shell
+          # Activate mise for this shell session
           eval "$($HOME/.local/bin/mise activate bash)"
           
-          # Install Ruby version defined in mise.toml
+          # Install Ruby version from mise.toml
           mise install
           
           # Use the installed Ruby version
           mise use ruby
           
-          # Verify Ruby version
+          # Verify Ruby version — should be 3.4.1
           ruby -v
           
-          # Install Bundler inside mise Ruby (no root permissions needed)
+          # Install Bundler in mise Ruby (avoids permission issues)
           gem install bundler --no-document
           
           # Install all gem dependencies
