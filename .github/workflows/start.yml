@@ -16,9 +16,8 @@ jobs:
           app_token: ${{ secrets.IR_API_KEY }}
           mode: docker-intercept
 
-      - name: Install and Use Ruby via mise
+      - name: Install and activate mise
         run: |
-          # Add mise to PATH
           export PATH="$HOME/.local/bin:$PATH"
           
           # Install mise
@@ -30,20 +29,26 @@ jobs:
           # Install Ruby version from mise.toml
           mise install
           
-          # Use the installed Ruby version
+          # Use mise-managed Ruby
           mise use ruby
           
-          # Verify Ruby version — should be 3.4.1
+          # Verify correct Ruby version
           ruby -v
+
+      - name: Install dependencies with Bundler
+        run: |
+          # Use mise Ruby — install bundler locally
+          export PATH="$HOME/.local/bin:$PATH"
+          eval "$($HOME/.local/bin/mise activate bash)"
           
-          # Install Bundler in mise Ruby (avoids permission issues)
           gem install bundler --no-document
-          
-          # Install all gem dependencies
           bundle install --jobs 4 --retry 3
 
       - name: Run tests
-        run: bundle exec rake test || echo "No tests defined"
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          eval "$($HOME/.local/bin/mise activate bash)"
+          bundle exec rake test || echo "No tests defined"
 
       - name: Cleanup PSE
         if: always()
