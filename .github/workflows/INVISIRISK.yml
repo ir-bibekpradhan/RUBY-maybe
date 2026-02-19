@@ -1,4 +1,4 @@
-name: Ruby build
+name: Ruby build latestt
 on:
   workflow_dispatch:
 
