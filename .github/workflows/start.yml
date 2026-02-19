@@ -16,19 +16,27 @@ jobs:
           app_token: ${{ secrets.IR_API_KEY }}
           mode: docker-intercept
 
-      - name: Install mise
-        run: curl https://mise.run | sh
-
       - name: Use Ruby via mise
         run: |
+          # Add mise to PATH
           export PATH="$HOME/.local/bin:$PATH"
+          
+          # Install mise
+          curl -sSL https://mise.run | sh
+          
+          # Install Ruby version from mise.toml
           mise install
+          
+          # Activate Ruby
           mise use ruby
+          
+          # Verify Ruby version
           ruby -v
-
-      - name: Install dependencies
-        run: |
-          gem install bundler
+          
+          # Install Bundler in mise Ruby (avoids permission issues)
+          gem install bundler --no-document
+          
+          # Install all gems from Gemfile
           bundle install --jobs 4 --retry 3
 
       - name: Run tests
