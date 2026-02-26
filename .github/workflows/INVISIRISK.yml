@@ -26,22 +26,3 @@ jobs:
           gem install bundler
           bundle install  # If you have a Gemfile
           gem list # This will list all installed gems
-          
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          cleanup: "true"
-          
-  gather_analytics:
-       runs-on: ubuntu-latest
-       name: Gather Analytics
-       needs: RUBY
-       if: always()
-       steps:
-       - name: Gather Status
-         uses: invisirisk/pse-action@latest
-         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY }}
-          send_job_status: "true"
