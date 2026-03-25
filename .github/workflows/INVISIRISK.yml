@@ -1,4 +1,5 @@
-name: Ruby build latestt
+name: Ruby build latest
+
 on:
   workflow_dispatch:
 
@@ -6,30 +7,32 @@ jobs:
   RUBY:
     runs-on: ubuntu-latest
     name: Run build
+
     steps:
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{secrets.IR_API_KEY}}
+          app_token: ${{ secrets.IR_API_KEY }}
       # ============= InvisiRisk Setup End =============
-      - uses: actions/checkout@v4
 
-      - name: Set up Ruby
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby with caching
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4.1' # specify your Ruby version
-          
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install  # If you have a Gemfile
-          gem list # This will list all installed gems
+          ruby-version: '3.4.1'
+          bundler-cache: true
+
+      - name: Show installed gems
+        run: gem list
+
       # ============= InvisiRisk Cleanup =============
       - name: Cleanup PSE
         if: always()
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           api_url: "https://app.stage.invisirisk.com"
           cleanup: "true"
