@@ -18,6 +18,7 @@ jobs:
           app_token: ${{secrets.IR_API_KEY}}
           mode: sidecar
           pse_image_tag: dev-test
+          collect_dependencies: false
       # ============= InvisiRisk Setup End =============
       - name: Checkout code
         uses: actions/checkout@v4
