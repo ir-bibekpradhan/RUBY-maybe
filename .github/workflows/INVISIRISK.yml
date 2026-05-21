@@ -34,7 +34,7 @@ jobs:
       # ============= InvisiRisk Cleanup =============
       - name: Cleanup PSE
         if: always()
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           cleanup: "true"
       # ============= InvisiRisk Cleanup End =============
