@@ -2,12 +2,21 @@ name: Ruby build latest
 
 on:
   workflow_dispatch:
+permissions:
+  checks: write
+  actions: read
+  contents: read
+  id-token: write
 jobs:
   RUBY:
     runs-on: ubuntu-latest
     name: Run build
 
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+      # ============= InvisiRisk Setup End =============
       - name: Checkout code
         uses: actions/checkout@v4
 
