@@ -2,20 +2,12 @@ name: Ruby build latest
 
 on:
   workflow_dispatch:
-permissions:
-  checks: write
 jobs:
   RUBY:
     runs-on: ubuntu-latest
     name: Run build
 
     steps:
-      # ============= InvisiRisk Setup =============
-      - name: Setup PSE
-        uses: invisirisk/pse-action@latest
-        with:
-          app_token: ${{secrets.IR_API_KEY}}
-      # ============= InvisiRisk Setup End =============
       - name: Checkout code
         uses: actions/checkout@v4
 
