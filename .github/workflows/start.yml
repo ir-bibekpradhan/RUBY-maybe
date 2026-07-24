@@ -10,11 +10,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup PSE
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
-          api_url: "https://app.stage.invisirisk.com"
+          api_url: "https://app.dev.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
-          mode: docker-intercept
 
       - name: Install and activate mise
         run: |
@@ -52,11 +51,6 @@ jobs:
           eval "$($HOME/.local/bin/mise activate bash)"
           bundle exec rake test || echo "No tests defined"
 
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          cleanup: "true"
 
   gather_analytics:
     runs-on: ubuntu-latest
@@ -65,8 +59,8 @@ jobs:
     if: always()
     steps:
       - name: Gather Status
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
-          api_url: "https://app.stage.invisirisk.com"
+          api_url: "https://app.dev.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
           send_job_status: "true"
